@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concert Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #data {
+            margin-top: 20px;
+        }
+
+        .fundraiser {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .fundraiser p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>CONVENTION CENTRE XYZ</h1>
+    <img src="header.jpg" width="400" alt="Header Image">
+
+    <nav>
+        <a href="Home.html"><span>Home</span></a> | 
+        <a href="Search.html"><span>Search</span></a> | 
+        <a href="Fundraiser.html"><span>Fundraiser</span></a>
+    </nav>
+
+    <div id="data"></div>
+
+    <script>
+        // 调用 GET API 获取募捐活动列表
+        fetch("http://localhost:3060/AllFundraisers")
+            .then(response => response.json())
+            .then(data => {
+                const dataDiv = document.getElementById('data');
+                dataDiv.innerHTML = ""; // 清空之前的内容
+
+                if (data.length > 0) {
+                    data.forEach(fundraiser => {
+                        const fundraiserDiv = document.createElement("div");
+                        fundraiserDiv.className = "fundraiser"; // 添加样式类
+                        fundraiserDiv.innerHTML = `
+                            <p><strong>Fundraiser ID:</strong> ${fundraiser.FUNDRAISER_ID}</p>
+                            <p><strong>Organizer:</strong> ${fundraiser.ORGANIZER}</p>
+                            <p><strong>Caption:</strong> ${fundraiser.CAPTION}</p>
+                            <p><strong>Target Funding:</strong> ${fundraiser.TARGET_FUNDING}</p>
+                            <p><strong>Current Funding:</strong> ${fundraiser.CURRENT_FUNDING}</p>
+                            <p><strong>City:</strong> ${fundraiser.CITY}</p>
+                            <p><strong>Active:</strong> ${fundraiser.ACTIVE}</p>
+                            <p><strong>Category ID:</strong> ${fundraiser.CATEGORY_ID}</p>
+                        `;
+                        dataDiv.appendChild(fundraiserDiv);
+                    });
+                } else {
+                    dataDiv.textContent = "没有可用的募捐活动数据。"; 
+                }
+            })
+            .catch(error => {
+                console.error("获取数据时出错:", error);
+                document.getElementById('data').textContent = "加载数据失败";
+            });
+    </script>
+</body>
+
+</html>

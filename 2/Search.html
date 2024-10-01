@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Fundraisers</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation styles */
+        nav {
+            background-color: #4CAF50;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .fundraiser-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .fundraiser-box p {
+            margin: 5px 0;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="Home.html">Home</a>
+        <a href="Search.html">Search</a>
+        <a href="Fundraiser.html">Fundraiser</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Search Fundraisers</h1>
+        <div class="search-container">
+            <label for="organizer">Organizer:</label>
+            <input type="text" id="organizer" placeholder="Enter organizer name"><br>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" placeholder="Enter city"><br>
+
+            <label for="category">Category:</label>
+            <select id="category">
+                <option value="">Select category</option>
+                <option value="1">Medical</option>
+                <option value="2">Education</option>
+                <option value="3">Crisis Relief</option>
+                <!-- Add more categories as needed -->
+            </select><br>
+
+            <label for="active">Active:</label>
+            <select id="active">
+                <option value="">Select status</option>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+            </select><br>
+
+            <!-- Buttons -->
+            <div class="button-container">
+                <button onclick="search()">Search</button>
+                <button onclick="clearCheckboxes()">Clear</button>
+            </div>
+        </div>
+
+        <!-- Display Search Results -->
+        <div id="data"></div>
+    </div>
+
+    <script>
+        function searchByConditions(organizer, city, category, active) {
+            const url = `http://localhost:3060/SearchCondition?ORGANIZER=${organizer}&CITY=${city}&CATEGORY=${category}&ACTIVE=${active}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const dataDiv = document.getElementById('data');
+                    dataDiv.innerHTML = "";
+
+                    if (data.length > 0) {
+                        data.forEach(fundraiser => {
+                            const boxDiv = document.createElement("div");
+                            boxDiv.classList.add("fundraiser-box");
+                            boxDiv.innerHTML = `
+                                <p><strong>Fundraiser ID:</strong> ${fundraiser.FUNDRAISER_ID}</p>
+                                <p><strong>Organizer:</strong> ${fundraiser.ORGANIZER}</p>
+                                <p><strong>Caption:</strong> ${fundraiser.CAPTION}</p>
+                                <p><strong>Target Funding:</strong> ${fundraiser.TARGET_FUNDING}</p>
+                                <p><strong>Current Funding:</strong> ${fundraiser.CURRENT_FUNDING}</p>
+                                <p><strong>City:</strong> ${fundraiser.CITY}</p>
+                                <p><strong>Active:</strong> ${fundraiser.ACTIVE}</p>
+                                <p><strong>Category:</strong> ${fundraiser.CATEGORY_NAME}</p>
+                            `;
+                            dataDiv.appendChild(boxDiv);
+                        });
+                    } else {
+                        const newP = document.createElement("p");
+                        newP.textContent = "No fundraisers found";
+                        newP.classList.add("error-message");
+                        dataDiv.appendChild(newP);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data", error);
+                    document.getElementById('data').textContent = "Failed to load data";
+                });
+        }
+
+        function search() {
+            const organizer = document.getElementById('organizer').value;
+            const city = document.getElementById('city').value;
+            const category = document.getElementById('category').value;
+            const active = document.getElementById('active').value;
+
+            if (!organizer && !city && !category && !active) {
+                alert("Please select at least one condition to search!");
+                return;
+            }
+
+            searchByConditions(organizer, city, category, active);
+        }
+
+        function clearCheckboxes() {
+            document.getElementById('organizer').value = "";
+            document.getElementById('city').value = "";
+            document.getElementById('category').selectedIndex = 0;
+            document.getElementById('active').selectedIndex = 0;
+            document.getElementById('data').innerHTML = "";
+        }
+    </script>
+
+</body>
+
+</html>
