@@ -7,92 +7,106 @@
 </head>
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
-        margin: 0;
-        padding: 0;
-    }
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
 
-    /* Navigation styles */
-    nav {
-        background-color: #4c56af; 
-        padding: 30px; 
-        text-align: center;
-        position: fixed; 
-        top: 0;
-        left: 0;
-        width: 100%; 
-        z-index: 1000; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+/* Navigation styles */
+nav {
+    background-color: #4c56af; 
+    padding: 15px 30px; 
+    text-align: center;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 1000; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 0 15px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main container */
+.container {
+    max-width: 800px; 
+    margin: 100px auto 20px; 
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; 
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#fundraiser-details {
+    margin-top: 20px;
+}
+
+.fundraiser {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.fundraiser p {
+    margin: 10px 0;
+    line-height: 1.6; 
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
     }
 
     nav a {
-        color: white;
-        text-decoration: none;
-        font-size: 18px;
-        margin: 0 15px;
-    }
-
-    nav a:hover {
-        text-decoration: underline;
-    }
-
-    /* Main container */
-    .container {
-        max-width: 1000px;
-        margin: 100px auto 10px; 
-        padding: 20px;
-        background-color: white;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        color: #333;
-        text-align: center;
-    }
-
-    img {
         display: block;
-        margin: 0 auto;
-        max-width: 100%;
-        height: auto;
-    }
-
-    #fundraiser-details {
-        margin-top: 20px;
-    }
-
-    .fundraiser {
-        border: 1px solid #ddd;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .fundraiser p {
         margin: 10px 0;
     }
+}
 
-    /* Error message styling */
-    .error-message {
-        color: red;
-        font-weight: bold;
-        text-align: center;
-    }
+.donate-button {
+    position: fixed; 
+    top: 150px; 
+    right: 30px; 
+    background-color: #4c56af; 
+    color: white; 
+    border: none; 
+    padding: 15px 25px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s; 
+}
 
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .container {
-            padding: 10px;
-        }
+.donate-button:hover {
+    background-color: #3e4a8c; 
+}
 
-        nav a {
-            display: block;
-            margin: 10px 0;
-        }
-    }
 </style>
 
 <body>
@@ -106,6 +120,7 @@
     <div id="fundraiser-details">
         <!-- Fundraiser details will be displayed here -->
     </div>
+    <button class="donate-button" onclick="donate()">Donate</button>
 
     <script>
         // Helper function to get query parameters from URL
@@ -147,6 +162,9 @@
                     document.getElementById('fundraiser-details').innerText = "Error loading fundraiser details.";
                 });
         }
+
+        function donate() {
+            alert("Thank you for your gift");}
     </script>
 </body>
 </html>

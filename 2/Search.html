@@ -156,7 +156,7 @@
             <!-- Buttons -->
             <div class="button-container">
                 <button onclick="search()">Search</button>
-                <button onclick="clear()">Clear</button>
+                <button onclick="clearFilters()">Clear</button>
             </div>
         </div>
 
@@ -224,7 +224,7 @@
             searchFromDateBase(organizer, city, active, categoryID);
         }
     
-        function clear() {
+        function clearFilters() {
             document.getElementById('organizer').value = "";
             document.getElementById('city').value = "";
             document.getElementById('active').selectedIndex = 0;
