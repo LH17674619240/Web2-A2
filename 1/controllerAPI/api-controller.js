@@ -36,8 +36,8 @@ router.get("/AllCategories", (req, res) => {
 });
 
 // Retrieve all active fundraisers based on the conditions
-router.get("/AllFundraisers/search", (req, res) => {
-    const { categoryId, city } = req.query; 
+router.get("/search", (req, res) => {
+    const { ORGANIZER, CITY, ACTIVE, CATEGORY_ID } = req.query; 
     let query = `
         SELECT f.*, c.NAME AS CATEGORY_NAME 
         FROM FUNDRAISER f 
@@ -48,13 +48,23 @@ router.get("/AllFundraisers/search", (req, res) => {
     const conditions = [];
     const params = [];
     
-    if (categoryId) {
-        conditions.push(`f.CATEGORY_ID = ?`);
-        params.push(categoryId);
+    if (ORGANIZER) {
+        conditions.push(`f.ORGANIZER = ?`); 
+        params.push(ORGANIZER);
     }
-    if (city) {
+    if (CITY) {
         conditions.push(`f.CITY = ?`);
-        params.push(city);
+        params.push(CITY);
+    }
+
+    if (ACTIVE) {
+        conditions.push(`f.ACTIVE = ?`);
+        params.push(ACTIVE === 'true' ? true : false);
+    }
+
+    if (CATEGORY_ID) {
+        conditions.push(`f.CATEGORY_ID = ?`);
+        params.push(CATEGORY_ID);
     }
     
     if (conditions.length > 0) {
@@ -70,6 +80,8 @@ router.get("/AllFundraisers/search", (req, res) => {
         }
     });
 });
+
+
 
 //Get detailed information of fundraiser based on ID
 router.get("/FoundFundraiser/:id", (req, res) => {

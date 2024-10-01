@@ -8,16 +8,54 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-        }
+        /* Navigation styles */
+nav {
+    background-color: #4c56af; 
+    padding: 30px; 
+    text-align: center;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 1000; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 0 15px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main container */
+.container {
+    max-width: 1000px;
+    margin: 100px auto 10px; 
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
         h1 {
             color: #333;
+            text-align: center;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
         }
 
         #data {
@@ -26,42 +64,67 @@
 
         .fundraiser {
             border: 1px solid #ddd;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 20px;
+            margin-bottom: 20px;
             border-radius: 5px;
             background-color: #f9f9f9;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .fundraiser p {
-            margin: 5px 0;
+            margin: 10px 0;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>CONVENTION CENTRE XYZ</h1>
-    <img src="header.jpg" width="400" alt="Header Image">
 
+    <!-- Navigation Bar -->
     <nav>
-        <a href="Home.html"><span>Home</span></a> | 
-        <a href="Search.html"><span>Search</span></a> | 
+        <a href="Home.html"><span>Home</span></a>  
+        <a href="Search.html"><span>Search</span></a>  
         <a href="Fundraiser.html"><span>Fundraiser</span></a>
     </nav>
 
-    <div id="data"></div>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Love Project</h1>
+        <!-- Display Fundraisers -->
+        <div id="data"></div>
+    </div>
 
     <script>
-        // 调用 GET API 获取募捐活动列表
+        // Get the list of fundraising activities
         fetch("http://localhost:3060/AllFundraisers")
             .then(response => response.json())
             .then(data => {
                 const dataDiv = document.getElementById('data');
-                dataDiv.innerHTML = ""; // 清空之前的内容
-
+                dataDiv.innerHTML = "";
+                 // Clear the previous content
                 if (data.length > 0) {
                     data.forEach(fundraiser => {
-                        const fundraiserDiv = document.createElement("div");
-                        fundraiserDiv.className = "fundraiser"; // 添加样式类
+                        const
+                        fundraiserDiv = document.createElement("div");
+                        fundraiserDiv.className = "fundraiser"; 
                         fundraiserDiv.innerHTML = `
                             <p><strong>Fundraiser ID:</strong> ${fundraiser.FUNDRAISER_ID}</p>
                             <p><strong>Organizer:</strong> ${fundraiser.ORGANIZER}</p>
@@ -75,14 +138,18 @@
                         dataDiv.appendChild(fundraiserDiv);
                     });
                 } else {
-                    dataDiv.textContent = "没有可用的募捐活动数据。"; 
+                    const newP = document.createElement("p");
+                    newP.textContent = "No data available";
+                    newP.classList.add("error-message");
+                    dataDiv.appendChild(newP);
                 }
             })
             .catch(error => {
-                console.error("获取数据时出错:", error);
-                document.getElementById('data').textContent = "加载数据失败";
+                console.error("Failed to obtain data", error);
+                document.getElementById('data').textContent = "Failed to load data";
             });
     </script>
+
 </body>
 
 </html>

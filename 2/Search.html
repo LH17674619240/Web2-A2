@@ -16,9 +16,15 @@
 
         /* Navigation styles */
         nav {
-            background-color: #4CAF50;
+            background-color:  #4c56af;
             padding: 10px;
             text-align: center;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%; 
+            z-index: 1000; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         nav a {
@@ -63,7 +69,7 @@
 
         button {
             padding: 10px 20px;
-            background-color: #4CAF50;
+            background-color: #4c56af;
             color: white;
             border: none;
             cursor: pointer;
@@ -73,7 +79,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color:  #4c56af;
         }
 
         .fundraiser-box {
@@ -150,7 +156,7 @@
             <!-- Buttons -->
             <div class="button-container">
                 <button onclick="search()">Search</button>
-                <button onclick="clearCheckboxes()">Clear</button>
+                <button onclick="clear()">Clear</button>
             </div>
         </div>
 
@@ -159,14 +165,15 @@
     </div>
 
     <script>
-        function searchByConditions(organizer, city, category, active) {
-            const url = `http://localhost:3060/SearchCondition?ORGANIZER=${organizer}&CITY=${city}&CATEGORY=${category}&ACTIVE=${active}`;
+        function searchFromDateBase(organizer, city, active, categoryID) {
+            const url = `http://localhost:3060/search?ORGANIZER=${encodeURIComponent(organizer)}&CITY=${encodeURIComponent(city)}&ACTIVE=${encodeURIComponent(active)}&CATEGORY_ID=${encodeURIComponent(categoryID)}`;
+            
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     const dataDiv = document.getElementById('data');
                     dataDiv.innerHTML = "";
-
+    
                     if (data.length > 0) {
                         data.forEach(fundraiser => {
                             const boxDiv = document.createElement("div");
@@ -181,6 +188,13 @@
                                 <p><strong>Active:</strong> ${fundraiser.ACTIVE}</p>
                                 <p><strong>Category:</strong> ${fundraiser.CATEGORY_NAME}</p>
                             `;
+                            const button = document.createElement("button");
+                        button.innerText = "Details"; 
+                        button.onclick = () => {
+                            window.location.href = `Fundraiser.html?id=${fundraiser.FUNDRAISER_ID}`; 
+                        };
+                        
+                        boxDiv.appendChild(button); 
                             dataDiv.appendChild(boxDiv);
                         });
                     } else {
@@ -195,29 +209,30 @@
                     document.getElementById('data').textContent = "Failed to load data";
                 });
         }
-
+    
         function search() {
-            const organizer = document.getElementById('organizer').value;
-            const city = document.getElementById('city').value;
-            const category = document.getElementById('category').value;
+            const organizer = document.getElementById('organizer').value.trim(); 
+            const city = document.getElementById('city').value.trim();
             const active = document.getElementById('active').value;
-
-            if (!organizer && !city && !category && !active) {
+            const categoryID = document.getElementById('category').value;
+    
+            if (!organizer && !city && !active && !categoryID) {
                 alert("Please select at least one condition to search!");
                 return;
             }
-
-            searchByConditions(organizer, city, category, active);
+    
+            searchFromDateBase(organizer, city, active, categoryID);
         }
-
-        function clearCheckboxes() {
+    
+        function clear() {
             document.getElementById('organizer').value = "";
             document.getElementById('city').value = "";
-            document.getElementById('category').selectedIndex = 0;
             document.getElementById('active').selectedIndex = 0;
+            document.getElementById('category').selectedIndex = 0;
             document.getElementById('data').innerHTML = "";
         }
     </script>
+    
 
 </body>
 

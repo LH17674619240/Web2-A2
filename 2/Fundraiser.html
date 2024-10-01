@@ -5,10 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fundraiser Details</title>
 </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Navigation styles */
+    nav {
+        background-color: #4c56af; 
+        padding: 30px; 
+        text-align: center;
+        position: fixed; 
+        top: 0;
+        left: 0;
+        width: 100%; 
+        z-index: 1000; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        margin: 0 15px;
+    }
+
+    nav a:hover {
+        text-decoration: underline;
+    }
+
+    /* Main container */
+    .container {
+        max-width: 1000px;
+        margin: 100px auto 10px; 
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+    }
+
+    #fundraiser-details {
+        margin-top: 20px;
+    }
+
+    .fundraiser {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .fundraiser p {
+        margin: 10px 0;
+    }
+
+    /* Error message styling */
+    .error-message {
+        color: red;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        nav a {
+            display: block;
+            margin: 10px 0;
+        }
+    }
+</style>
+
 <body>
     <nav>
-        <a href="Home.html"><span>Home</span></a> | 
-        <a href="Search.html"><span>Search</span></a> | 
+        <a href="Home.html"><span>Home</span></a> 
+        <a href="Search.html"><span>Search</span></a>  
         <a href="Fundraiser.html"><span>Fundraiser</span></a>
     </nav>
 
@@ -47,7 +137,7 @@
                             <p>Target Funding: ${fundraiser.TARGET_FUNDING}</p>
                             <p>Current Funding: ${fundraiser.CURRENT_FUNDING}</p>
                             <p>City: ${fundraiser.CITY}</p>
-                            <p>Active: ${fundraiser.ACTIVE ? "Yes" : "No"}</p>
+                            <p>Active: ${fundraiser.ACTIVE ? "TRUE" : "FALSE"}</p>
                             <p>Category: ${fundraiser.CATEGORY_ID}</p>
                         `;
                     }
