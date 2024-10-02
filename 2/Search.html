@@ -140,9 +140,11 @@
             <label for="category">Category:</label>
             <select id="category">
                 <option value="">Select category</option>
-                <option value="1">Medical</option>
+                <option value="1">Health</option>
                 <option value="2">Education</option>
-                <option value="3">Crisis Relief</option>
+                <option value="3">Environment</option>
+                <option value="4">Animal Welfare</option>
+                <option value="5">Academic Research</option>
                 <!-- Add more categories as needed -->
             </select><br>
 
@@ -165,9 +167,12 @@
     </div>
 
     <script>
+        // Function to fetch fundraiser data from the database based on search parameters
         function searchFromDateBase(organizer, city, active, categoryID) {
+            // Construct the API endpoint URL with query parameters
             const url = `http://localhost:3060/search?ORGANIZER=${encodeURIComponent(organizer)}&CITY=${encodeURIComponent(city)}&ACTIVE=${encodeURIComponent(active)}&CATEGORY_ID=${encodeURIComponent(categoryID)}`;
             
+            // Fetch data from the API
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -195,7 +200,7 @@
                         };
                         
                         boxDiv.appendChild(button); 
-                            dataDiv.appendChild(boxDiv);
+                        dataDiv.appendChild(boxDiv);
                         });
                     } else {
                         const newP = document.createElement("p");
@@ -209,7 +214,8 @@
                     document.getElementById('data').textContent = "Failed to load data";
                 });
         }
-    
+
+        // Function to handle the search action when the user clicks the "Search" button
         function search() {
             const organizer = document.getElementById('organizer').value.trim(); 
             const city = document.getElementById('city').value.trim();
@@ -223,7 +229,8 @@
     
             searchFromDateBase(organizer, city, active, categoryID);
         }
-    
+
+        // Function to clear the search filters and reset the input fields
         function clearFilters() {
             document.getElementById('organizer').value = "";
             document.getElementById('city').value = "";
